@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "426441970372",
+    "project_id": "cmps-279-project",
+    "storage_bucket": "cmps-279-project.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:426441970372:android:7c6874bfd3bc2ffcb72f91",
+        "android_client_info": {
+          "package_name": "com.example.a279project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQVCGZMhq8_PvzEiP3t-kEcaaY3iYIo-4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

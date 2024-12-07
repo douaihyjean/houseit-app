@@ -1,0 +1,134 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5">
+
+    <!-- ScrollView to enable vertical scrolling -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_above="@id/bottomNavBar"
+        android:layout_below="@id/topBar"
+        android:scrollbars="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Search Field -->
+            <EditText
+                android:id="@+id/searchField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:hint="Search"
+                android:padding="12dp"
+                android:background="@drawable/rounded_edit_text"
+                android:drawableEnd="@drawable/ic_search_icon" />
+
+            <!-- RecyclerView for Property Listings -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/propertyRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/searchField"
+                android:layout_marginHorizontal="16dp"
+                android:paddingBottom="8dp"
+                android:contentDescription="@string/property_listings" />
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <!-- Top Bar with Search Title and Filter Icon -->
+    <RelativeLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F8F8F8"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/searchTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search"
+            android:textStyle="bold"
+            android:textSize="40sp"
+            android:textColor="#000000" />
+
+        <ImageView
+            android:id="@+id/filterIcon"
+            android:layout_width="31dp"
+            android:layout_height="31dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_filter_icon"
+            android:contentDescription="@string/filter_icon" />
+    </RelativeLayout>
+
+    <!-- Bottom Navigation Bar -->
+    <LinearLayout
+        android:id="@+id/bottomNavBar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:background="#F8F8F8">
+
+        <!-- Bottom Navigation Icons -->
+        <ImageView
+            android:id="@+id/searchIcon"
+            android:layout_width="0dp"
+            android:layout_height="39dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_search_icon"
+            android:contentDescription="@string/search"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            android:layout_margin="12dp" />
+
+        <ImageView
+            android:id="@+id/savedIcon"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_saved"
+            android:contentDescription="@string/saved"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            android:layout_margin="12dp" />
+
+        <ImageView
+            android:id="@+id/postIcon"
+            android:layout_width="0dp"
+            android:layout_height="39dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_post"
+            android:contentDescription="Post"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            android:layout_margin="12dp" />
+
+
+
+        <ImageView
+            android:id="@+id/predictIcon"
+            android:layout_width="0dp"
+            android:layout_height="39dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_predict"
+            android:contentDescription="@string/predict" />
+
+
+        <ImageView
+            android:id="@+id/profileIcon"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_profile"
+            android:contentDescription="Profile Icon"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            android:layout_margin="12dp" />
+    </LinearLayout>
+</RelativeLayout>

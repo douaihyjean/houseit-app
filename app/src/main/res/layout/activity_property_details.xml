@@ -1,0 +1,177 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    android:padding="16dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Property Image -->
+        <ImageView
+            android:id="@+id/propertyImage"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/property_image" />
+
+        <!-- Back Button -->
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="16dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/ic_back_arrow"
+            android:contentDescription="@string/back_button"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <!-- Property Title -->
+        <TextView
+            android:id="@+id/propertyTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/propertyImage"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:text="Koraytem Apartment"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#000000" />
+
+        <!-- Price -->
+        <TextView
+            android:id="@+id/propertyPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/propertyTitle"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:text="1,000,000 $"
+            android:textSize="20sp"
+            android:textColor="#000000" />
+
+        <!-- Owner Name -->
+        <TextView
+            android:id="@+id/propertyOwner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/propertyPrice"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:text="Owner: Riwa Nahas"
+            android:textSize="18sp"
+            android:textColor="#000000" />
+
+        <!-- Address -->
+        <TextView
+            android:id="@+id/propertyAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/propertyOwner"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:text="Address: Koraytem, Marie Curie"
+            android:textSize="18sp"
+            android:textColor="#000000" />
+
+        <!-- Area -->
+        <TextView
+            android:id="@+id/propertyArea"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/propertyAddress"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:text="Area: 1500 sq ft"
+            android:textSize="18sp"
+            android:textColor="#000000" />
+
+        <!-- Bedrooms -->
+        <TextView
+            android:id="@+id/propertyBedrooms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/propertyArea"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:text="Bedrooms: 3"
+            android:textSize="18sp"
+            android:textColor="#000000" />
+
+        <!-- Bathrooms -->
+        <TextView
+            android:id="@+id/propertyBathrooms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/propertyBedrooms"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:text="Bathrooms: 2"
+            android:textSize="18sp"
+            android:textColor="#000000" />
+
+        <!-- Stories -->
+        <TextView
+            android:id="@+id/propertyStories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/propertyBathrooms"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:text="Stories: 1"
+            android:textSize="18sp"
+            android:textColor="#000000" />
+
+        <!-- Main Road -->
+        <TextView
+            android:id="@+id/propertyMainRoad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/propertyStories"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:text="Main Road Access: Yes"
+            android:textSize="18sp"
+            android:textColor="#000000" />
+
+        <!-- Guest Room -->
+        <TextView
+            android:id="@+id/propertyGuestRoom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/propertyMainRoad"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:text="Guest Room: Yes"
+            android:textSize="18sp"
+            android:textColor="#000000" />
+
+        <!-- Furnishing Status -->
+        <TextView
+            android:id="@+id/propertyFurnishing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/propertyGuestRoom"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:text="Furnishing Status: Fully Furnished"
+            android:textSize="18sp"
+            android:textColor="#000000" />
+
+        <!-- Description -->
+        <TextView
+            android:id="@+id/propertyDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/propertyFurnishing"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:text="Description: Spacious and luxurious apartment with modern amenities."
+            android:textSize="18sp"
+            android:textColor="#000000" />
+    </RelativeLayout>
+</ScrollView>

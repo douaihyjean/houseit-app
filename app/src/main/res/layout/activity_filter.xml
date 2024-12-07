@@ -1,0 +1,87 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    tools:context=".FilterActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Filter Listings"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Area Input -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Area (sq. ft.)" />
+            <EditText
+                android:id="@+id/areaField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter minimum area" />
+
+            <!-- Bedrooms -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Minimum Bedrooms" />
+            <SeekBar
+                android:id="@+id/bedroomsSlider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="5" />
+
+            <!-- Bathrooms -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Minimum Bathrooms" />
+            <SeekBar
+                android:id="@+id/bathroomsSlider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="5" />
+
+            <!-- Price -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Maximum Price" />
+            <EditText
+                android:id="@+id/priceField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter maximum price" />
+
+            <!-- Buttons -->
+            <Button
+                android:id="@+id/applyFilterButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Apply Filters"
+                android:layout_marginTop="16dp" />
+
+            <Button
+                android:id="@+id/clearFilterButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Clear Filters"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

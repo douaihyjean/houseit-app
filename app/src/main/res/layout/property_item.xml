@@ -1,0 +1,76 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/property_card_background"
+    android:layout_marginBottom="16dp"
+    android:padding="16dp">
+
+    <!-- Profile Picture -->
+    <ImageView
+        android:id="@+id/profilePicture"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_profile"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_alignParentStart="true" />
+
+    <!-- Profile Name -->
+    <TextView
+        android:id="@+id/profileName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/profilePicture"
+        android:text="Riwa Nahas"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold" />
+
+    <!-- Property Image -->
+    <ImageView
+        android:id="@+id/propertyImage"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_below="@id/profileName"
+        android:layout_marginTop="8dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/koraytem" />
+
+    <!-- Location -->
+    <TextView
+        android:id="@+id/location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/propertyImage"
+        android:layout_marginTop="8dp"
+        android:text="Koraytem, Beirut"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <!-- Price -->
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/location"
+        android:layout_marginTop="4dp"
+        android:text="$ 1,000,000"
+        android:textColor="#000000"
+        android:textSize="16sp" />
+
+    <!-- Heart Icon (Aligned to the right corner) -->
+    <ImageView
+        android:id="@+id/heartIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@id/price"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_heart_empty"
+        android:contentDescription="@string/heart" />
+
+
+</RelativeLayout>

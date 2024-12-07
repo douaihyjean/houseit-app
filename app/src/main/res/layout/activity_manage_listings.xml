@@ -1,0 +1,136 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    android:padding="16dp">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/manageListingsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/manage_listings"
+        android:textSize="18sp"
+        android:textColor="#A0A0A0"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Listings Card -->
+    <RelativeLayout
+        android:id="@+id/listingsCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/manageListingsTitle"
+        android:background="#FFFFFF"
+        android:padding="16dp"
+        android:elevation="4dp"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:id="@+id/listingsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/your_listings"
+            android:textSize="24sp"
+            android:textColor="#000000"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/listingsSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="You have (3) listings"
+            android:textSize="16sp"
+            android:textColor="#707070"
+            android:layout_below="@id/listingsTitle"
+            android:layout_marginTop="8dp" />
+
+        <!-- Listings RecyclerView for multiple listings -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listingsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/listingsSubtitle"
+            android:layout_marginTop="16dp"
+            android:clipToPadding="false"
+            android:paddingBottom="8dp" />
+    </RelativeLayout>
+
+    <!-- Add New Listing Button -->
+    <Button
+        android:id="@+id/addListingButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_new_listing"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/listingsCard"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#4A90E2"
+        android:textColor="#FFFFFF" />
+
+
+    <!-- Bottom Navigation Bar -->
+    <LinearLayout
+        android:id="@+id/bottomNavBar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:background="#FFFFFF">
+
+        <ImageView
+            android:id="@+id/searchIcon"
+            android:layout_width="0dp"
+            android:layout_height="39dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_search_selected"
+            android:contentDescription="Search"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            android:layout_margin="12dp" />
+
+        <ImageView
+            android:id="@+id/savedIcon"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_saved"
+            android:contentDescription="Saved"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            android:layout_margin="12dp" />
+
+        <ImageView
+            android:id="@+id/postIcon"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_post"
+            android:contentDescription="Post"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            android:layout_margin="12dp" />
+
+        <ImageView
+            android:id="@+id/predictIcon"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_predict"
+            android:contentDescription="Predict"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            android:layout_margin="12dp" />
+
+        <ImageView
+            android:id="@+id/profileIcon"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_profile"
+            android:contentDescription="Profile"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            android:layout_margin="12dp" />
+    </LinearLayout>
+</RelativeLayout>

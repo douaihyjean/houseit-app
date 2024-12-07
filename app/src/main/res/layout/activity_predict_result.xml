@@ -1,0 +1,66 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:padding="24dp">
+
+    <!-- Back Button -->
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_back_arrow"
+        android:contentDescription="Back"
+        android:layout_alignParentTop="true" />
+
+    <!-- Title TextView -->
+    <TextView
+        android:id="@+id/predictResultTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Predicted Result"
+        android:textSize="28sp"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
+
+    <!-- Predicted Price Text -->
+    <TextView
+        android:id="@+id/predictedPriceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your Predicted Price Stands at"
+        android:textSize="22sp"
+        android:textColor="#000000"
+        android:layout_below="@id/predictResultTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp" />
+
+    <!-- Predicted Price Value -->
+    <TextView
+        android:id="@+id/predictedPriceValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="200 000$"
+        android:textSize="43sp"
+        android:textColor="#2196F3"
+        android:textStyle="bold"
+        android:layout_below="@id/predictedPriceText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp" />
+
+    <!-- Enlarged Illustration Image -->
+    <ImageView
+        android:id="@+id/predictResultImage"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:layout_below="@id/predictedPriceValue"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/predict"
+        android:contentDescription="Illustration of a person with houses in the background" />
+
+</RelativeLayout>

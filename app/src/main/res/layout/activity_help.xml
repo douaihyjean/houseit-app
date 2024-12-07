@@ -1,0 +1,120 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    android:padding="16dp">
+
+    <!-- Back Button -->
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_back_arrow"
+        android:contentDescription="Back Button" />
+
+    <!-- Help Title -->
+    <TextView
+        android:id="@+id/helpTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/backButton"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:text="Help"
+        android:textColor="#000000"
+        android:textSize="28sp"
+        android:textStyle="bold" />
+
+    <!-- FAQs Section -->
+    <TextView
+        android:id="@+id/faqsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/helpTitle"
+        android:layout_marginTop="20dp"
+        android:text="FAQs"
+        android:textColor="#6B9BFF"
+        android:textSize="28sp"
+        android:textStyle="bold" />
+
+    <!-- Question 1 -->
+    <TextView
+        android:id="@+id/q1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/faqsTitle"
+        android:layout_marginTop="20dp"
+        android:text="How to buy?"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:background="#E0E0E0"
+        android:padding="12dp"
+        android:layout_marginBottom="5dp" />
+
+    <!-- Answer 1 -->
+    <TextView
+        android:id="@+id/a1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/q1"
+        android:layout_marginTop="5dp"
+        android:text="You can buy by selecting the desired property and clicking on the 'Buy Now' button, which will guide you through the payment process."
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:padding="12dp" />
+
+    <!-- Question 2 -->
+    <TextView
+        android:id="@+id/q2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/a1"
+        android:layout_marginTop="20dp"
+        android:text="Can I filter houses based on price range?"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:background="#E0E0E0"
+        android:padding="12dp"
+        android:layout_marginBottom="5dp" />
+
+    <!-- Answer 2 -->
+    <TextView
+        android:id="@+id/a2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/q2"
+        android:layout_marginTop="5dp"
+        android:text="Yes, you can filter houses by using the 'Filter' option in the search page. You can set the desired price range to view available listings within your budget."
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:padding="12dp" />
+
+    <!-- Question 3 -->
+    <TextView
+        android:id="@+id/q3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/a2"
+        android:layout_marginTop="20dp"
+        android:text="How often is the house listing updated?"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:background="#E0E0E0"
+        android:padding="12dp"
+        android:layout_marginBottom="5dp" />
+
+    <!-- Answer 3 -->
+    <TextView
+        android:id="@+id/a3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/q3"
+        android:layout_marginTop="5dp"
+        android:text="Our listings are updated in real time to ensure that you get the latest available properties."
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:padding="12dp" />
+
+</RelativeLayout>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_back_arrow"
+        android:contentDescription="Back Button" />
+    <!-- Image at the Top -->
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/ic_user_image" />
+
+    <!-- Title Text -->
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="@string/create_account"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <!-- Input Fields -->
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/profileName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titleText"
+        android:layout_margin="16dp"
+        android:hint="Full Name"
+        android:padding="12dp"
+        android:backgroundTint="#000000"
+        android:drawableStart="@drawable/ic_user_icon"
+        android:drawablePadding="10dp"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/inputEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/profileName"
+        android:layout_margin="16dp"
+        android:hint="@string/email_address"
+        android:padding="12dp"
+        android:backgroundTint="#000000"
+        android:drawableStart="@drawable/ic_email_icon"
+        android:drawablePadding="10dp"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/inputPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/inputEmail"
+        android:layout_margin="16dp"
+        android:hint="@string/password"
+        android:padding="12dp"
+        android:backgroundTint="#000000"
+        android:drawableStart="@drawable/ic_password_icon"
+        android:drawablePadding="10dp"
+        android:inputType="textPassword"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/inputConfirmPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/inputPassword"
+        android:layout_margin="16dp"
+        android:hint="@string/confirm_password"
+        android:padding="12dp"
+        android:backgroundTint="#000000"
+        android:drawableStart="@drawable/ic_password_icon"
+        android:drawablePadding="10dp"
+        android:inputType="textPassword"/>
+
+    <!-- Progress Bar-->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <!-- Register Button -->
+
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/inputConfirmPassword"
+        android:layout_margin="16dp"
+        android:layout_marginTop="-115dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#4A90E2"
+        android:text="@string/register"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:id="@+id/loginNow"
+        android:text="@string/click_to_login"/>
+
+</RelativeLayout>
