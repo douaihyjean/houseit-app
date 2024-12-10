@@ -2,22 +2,29 @@ package com.example.a279project
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
+import java.io.IOException
 
 class CreateAccountActivity : AppCompatActivity() {
 
     private lateinit var registerButton: Button
     private lateinit var auth: FirebaseAuth
+    private val client = OkHttpClient() // HTTP client for API calls
 
     override fun onStart() {
         super.onStart()
 
         // Check if the user is already signed in
-        if (::auth.isInitialized) { // Ensure auth is initialized before accessing it
+        if (::auth.isInitialized) {
             val currentUser = auth.currentUser
             if (currentUser != null) {
                 val intent = Intent(this, SearchActivity::class.java)
@@ -59,28 +66,8 @@ class CreateAccountActivity : AppCompatActivity() {
             val confirmPassword = editTextConfirmPassword.text.toString().trim()
 
             // Input validation
-            if (name.isEmpty()) {
-                Toast.makeText(this, "Enter Name", Toast.LENGTH_SHORT).show()
-                progressBar.visibility = View.GONE
-                return@setOnClickListener
-            }
-            if (email.isEmpty()) {
-                Toast.makeText(this, "Enter Email", Toast.LENGTH_SHORT).show()
-                progressBar.visibility = View.GONE
-                return@setOnClickListener
-            }
-            if (password.isEmpty()) {
-                Toast.makeText(this, "Enter Password", Toast.LENGTH_SHORT).show()
-                progressBar.visibility = View.GONE
-                return@setOnClickListener
-            }
-            if (confirmPassword.isEmpty()) {
-                Toast.makeText(this, "Confirm your Password", Toast.LENGTH_SHORT).show()
-                progressBar.visibility = View.GONE
-                return@setOnClickListener
-            }
-            if (password != confirmPassword) {
-                Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
+            if (name.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || password != confirmPassword) {
+                Toast.makeText(this, "Please check your inputs.", Toast.LENGTH_SHORT).show()
                 progressBar.visibility = View.GONE
                 return@setOnClickListener
             }
@@ -93,17 +80,7 @@ class CreateAccountActivity : AppCompatActivity() {
                         // Account creation success
                         val userId = task.result?.user?.uid
                         if (userId != null) {
-                            // Save user details to SQLite database
-                            val dbHelper = DatabaseHelper(this)
-                            val rowId = dbHelper.insertUser(userId, name)
-                            if (rowId != -1L) {
-                                Toast.makeText(this, "Account created successfully.", Toast.LENGTH_SHORT).show()
-                                val intent = Intent(this, SearchActivity::class.java)
-                                startActivity(intent)
-                                finish() // Close CreateAccountActivity
-                            } else {
-                                Toast.makeText(this, "Error saving user details to database.", Toast.LENGTH_LONG).show()
-                            }
+                            sendUserToBackend(userId, name)
                         } else {
                             Toast.makeText(this, "Error retrieving user ID.", Toast.LENGTH_LONG).show()
                         }
@@ -121,5 +98,45 @@ class CreateAccountActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+    }
+
+    private fun sendUserToBackend(userId: String, fullName: String) {
+        // Prepare the JSON payload
+        val json = JSONObject()
+        json.put("user_id", userId)
+        json.put("full_name", fullName)
+
+        // Create the request body
+        val requestBody = json.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
+
+        // Prepare the HTTP request
+        val request = Request.Builder()
+            .url("http://10.0.2.2:8000/users/") // Replace with your FastAPI backend URL
+            .post(requestBody)
+            .build()
+
+        // Make the API call
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                runOnUiThread {
+                    Toast.makeText(this@CreateAccountActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    runOnUiThread {
+                        Toast.makeText(this@CreateAccountActivity, "Account created successfully.", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@CreateAccountActivity, SearchActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                } else {
+                    runOnUiThread {
+                        Toast.makeText(this@CreateAccountActivity, "Error saving user to backend.", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+        })
     }
 }

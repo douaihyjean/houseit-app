@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.google.gms.google.services) // Plugin for Firebase services
 }
 
 android {
@@ -51,6 +51,7 @@ android {
 }
 
 dependencies {
+    // AndroidX Libraries
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -62,14 +63,32 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.material)
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.firebase.auth)
-    implementation(libs.firebase.storage.ktx)
-    implementation(libs.firebase.firestore.ktx)
+
+    // Firebase Libraries
+    implementation(libs.firebase.auth) // Firebase Authentication
+    implementation(libs.firebase.storage.ktx) // Firebase Storage
+    implementation(libs.firebase.firestore.ktx) // Firebase Firestore
+
+    // OkHttp for API calls
+    implementation("com.squareup.okhttp3:okhttp:4.11.0") // Core OkHttp library
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0") // Optional logging interceptor
+
+    // Retrofit for API integration
+    implementation("com.squareup.retrofit2:retrofit:2.9.0") // Core Retrofit library
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0") // Gson converter for JSON
+
+    // Glide for image loading
+    implementation("com.github.bumptech.glide:glide:4.15.1") // Core Glide library
+    annotationProcessor("com.github.bumptech.glide:compiler:4.15.1") // Compiler for Glide
+
+    // Testing Libraries
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+
+    // Debugging Tools
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }

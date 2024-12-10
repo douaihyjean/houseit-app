@@ -10,6 +10,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import okhttp3.*
+import java.io.IOException
 
 class LoginActivity : AppCompatActivity() {
 
@@ -18,6 +20,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var loginButton: Button
     private lateinit var progressBar: ProgressBar
     private lateinit var auth: FirebaseAuth
+    private val client = OkHttpClient()
 
     public override fun onStart() {
         super.onStart()
@@ -78,16 +81,58 @@ class LoginActivity : AppCompatActivity() {
                     progressBar.visibility = View.GONE
 
                     if (task.isSuccessful) {
-                        // Sign in success
-                        Toast.makeText(this, "Login Successful.", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this, SearchActivity::class.java)
-                        startActivity(intent)
-                        finish()
+                        // Get Firebase user ID
+                        val userId = auth.currentUser?.uid ?: ""
+
+                        // Verify the user in the backend
+                        verifyUserInBackend(userId)
                     } else {
                         // Sign in fails
                         Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show()
                     }
                 }
         }
+    }
+
+    private fun verifyUserInBackend(userId: String) {
+        val request = Request.Builder()
+            .url("http://10.0.2.2:8000/users/" + userId) // FastAPI endpoint
+            .get()
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                runOnUiThread {
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "Error verifying user: " + e.message,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@LoginActivity,
+                            "Login Successful.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        val intent = Intent(this@LoginActivity, SearchActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                } else {
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@LoginActivity,
+                            "User not found in the backend.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
+        })
     }
 }

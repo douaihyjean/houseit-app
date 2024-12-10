@@ -7,11 +7,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.a279project.DatabaseHelper
+import com.bumptech.glide.Glide
 import com.example.a279project.Property
 import com.example.a279project.PropertyDetailsActivity
 import com.example.a279project.R
+import com.example.a279project.Saved
+import com.example.a279project.SavedCreate
+import com.example.a279project.api.RetrofitInstance
 import com.google.firebase.auth.FirebaseAuth
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class PropertyAdapter(
     private val propertyList: MutableList<Property>, // Original property list
@@ -19,9 +25,8 @@ class PropertyAdapter(
     private val onUnlike: ((Property) -> Unit)? = null // Optional callback for unliking
 ) : RecyclerView.Adapter<PropertyAdapter.PropertyViewHolder>() {
 
-    private val dbHelper = DatabaseHelper(context)
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
-    private var filteredList: MutableList<Property> = propertyList.toMutableList() // Filtered property list
+    var filteredList: MutableList<Property> = propertyList.toMutableList() // Filtered property list
 
     inner class PropertyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val profilePicture: ImageView = view.findViewById(R.id.profilePicture) // User's profile picture
@@ -42,34 +47,29 @@ class PropertyAdapter(
         val userId = firebaseAuth.currentUser?.uid
 
         // Bind property data to views
-        holder.profilePicture.setImageResource(property.profilePicture) // User profile image
-        holder.propertyImage.setImageResource(property.propertyImage)   // Property image
-        holder.profileName.text = property.profileName                  // User's full name
-        holder.price.text = "$${property.price}"                        // Property price
-        holder.location.text = property.address                         // Property address
+        Glide.with(context)
+            .load(property.profilePicture) // Load profile image
+            .placeholder(R.drawable.ic_profile_image) // Fallback image
+            .into(holder.profilePicture)
+
+        Glide.with(context)
+            .load(property.propertyImage) // Load property image
+            .placeholder(R.drawable.koraytem) // Fallback image
+            .into(holder.propertyImage)
+
+        holder.profileName.text = property.profileName // User's full name
+        holder.price.text = "$${property.price}"       // Property price
+        holder.location.text = property.address        // Property address
 
         // Set initial heart icon state
-        if (userId != null) {
-            val isSaved = dbHelper.isListingSaved(userId, property.id)
-            holder.heartIcon.setImageResource(
-                if (isSaved) R.drawable.ic_saved else R.drawable.ic_heart_empty
-            )
+        holder.heartIcon.setImageResource(R.drawable.ic_heart_empty)
 
-            // Handle heart icon click
-            holder.heartIcon.setOnClickListener {
-                if (dbHelper.isListingSaved(userId, property.id)) {
-                    dbHelper.removeSavedListing(userId, property.id)
-                    holder.heartIcon.setImageResource(R.drawable.ic_heart_empty)
-                    onUnlike?.invoke(property) // Notify SavedActivity
-                } else {
-                    dbHelper.saveListing(userId, property.id)
-                    holder.heartIcon.setImageResource(R.drawable.ic_saved)
-                }
-            }
-        } else {
-            holder.heartIcon.setImageResource(R.drawable.ic_heart_empty)
-            holder.heartIcon.setOnClickListener {
+        // Handle heart icon click
+        holder.heartIcon.setOnClickListener {
+            if (userId == null) {
                 Toast.makeText(context, "Please log in to save listings.", Toast.LENGTH_SHORT).show()
+            } else {
+                saveListing(userId, property.id ?: 0, holder.heartIcon)
             }
         }
 
@@ -113,5 +113,26 @@ class PropertyAdapter(
         filteredList.clear()
         filteredList.addAll(propertyList)
         notifyDataSetChanged()
+    }
+
+    /**
+     * Save the listing to the user's saved listings.
+     */
+    private fun saveListing(userId: String, listingId: Int, heartIcon: ImageView) {
+        val savedRequest = SavedCreate(user_id = userId, listing_id = listingId)
+        RetrofitInstance.api.saveListing(savedRequest).enqueue(object : Callback<Saved> {
+            override fun onResponse(call: Call<Saved>, response: Response<Saved>) {
+                if (response.isSuccessful) {
+                    Toast.makeText(context, "Listing saved!", Toast.LENGTH_SHORT).show()
+                    heartIcon.setImageResource(R.drawable.ic_saved)
+                } else {
+                    Toast.makeText(context, "Failed to save listing. Please try again.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Saved>, t: Throwable) {
+                Toast.makeText(context, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }

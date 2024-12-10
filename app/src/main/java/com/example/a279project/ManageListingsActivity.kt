@@ -10,40 +10,27 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.FirebaseAuth
+import com.example.a279project.api.RetrofitInstance
+import com.example.a279project.Listing
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ManageListingsActivity : AppCompatActivity() {
 
     private lateinit var listingsRecyclerView: RecyclerView
     private lateinit var listingsAdapter: ListingsAdapter
-    private lateinit var dbHelper: DatabaseHelper
-    private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var listingsSubtitle: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manage_listings)
 
-        // Initialize Firebase Authentication and DatabaseHelper
-        firebaseAuth = FirebaseAuth.getInstance()
-        dbHelper = DatabaseHelper(this)
-
         // Get reference to the listingsSubtitle TextView
         listingsSubtitle = findViewById(R.id.listingsSubtitle)
 
-        // Get the current user ID
-        val currentUserId = firebaseAuth.currentUser?.uid
-
-        // If the user is not logged in, show a message and navigate back
-        if (currentUserId == null) {
-            Toast.makeText(this, "User not authenticated. Please log in.", Toast.LENGTH_SHORT).show()
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-            return
-        }
-
-        // Fetch user-specific listings from the database
-        loadUserListings(currentUserId)
+        // Fetch user-specific listings from the API
+        loadUserListings()
 
         // Button to navigate to PostActivity
         val addListingButton: Button = findViewById(R.id.addListingButton)
@@ -72,105 +59,79 @@ class ManageListingsActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        val currentUserId = firebaseAuth.currentUser?.uid
-        if (currentUserId != null) {
-            loadUserListings(currentUserId)
-        }
+        loadUserListings()
     }
 
-    private fun loadUserListings(userId: String) {
-        val listings = dbHelper.getListingsForUser(userId).map {
-            Listing(
-                id = it[DatabaseHelper.COLUMN_ID]?.toInt() ?: 0,
-                title = it[DatabaseHelper.COLUMN_TITLE] ?: "",
-                price = it[DatabaseHelper.COLUMN_PRICE] ?: "",
-                address = it[DatabaseHelper.COLUMN_ADDRESS] ?: "",
-                description = it[DatabaseHelper.COLUMN_DESCRIPTION] ?: "",
-                area = it[DatabaseHelper.COLUMN_AREA] ?: "",
-                bedrooms = it[DatabaseHelper.COLUMN_BEDROOMS] ?: "",
-                bathrooms = it[DatabaseHelper.COLUMN_BATHROOMS] ?: "",
-                stories = it[DatabaseHelper.COLUMN_STORIES] ?: "",
-                mainroad = it[DatabaseHelper.COLUMN_MAINROAD] ?: "",
-                guestroom = it[DatabaseHelper.COLUMN_GUESTROOM] ?: "",
-                basement = it[DatabaseHelper.COLUMN_BASEMENT] ?: "",
-                hotWaterHeating = it[DatabaseHelper.COLUMN_HOT_WATER_HEATING] ?: "",
-                airConditioning = it[DatabaseHelper.COLUMN_AIR_CONDITIONING] ?: "",
-                parking = it[DatabaseHelper.COLUMN_PARKING] ?: "",
-                preferredArea = it[DatabaseHelper.COLUMN_PREF_AREA] ?: "",
-                furnishingStatus = it[DatabaseHelper.COLUMN_FURNISHING_STATUS] ?: "",
-                imageUri = it[DatabaseHelper.COLUMN_IMAGE_URI] ?: "",
-                imageResId = resources.getIdentifier(
-                    it[DatabaseHelper.COLUMN_IMAGE_URI]?.replace("drawable/", ""),
-                    "drawable",
-                    packageName
-                ),
-                userName = it[DatabaseHelper.COLUMN_USER_FULL_NAME] ?: "Unknown User"
-            )
-        }.toMutableList()
+    private fun loadUserListings() {
+        // Fetch listings from the API
+        RetrofitInstance.api.getListings(0, 10).enqueue(object : Callback<List<Listing>> {
+            override fun onResponse(call: Call<List<Listing>>, response: Response<List<Listing>>) {
+                if (response.isSuccessful) {
+                    val listings = response.body()?.toMutableList() ?: mutableListOf()
 
-        // Update the listingsSubtitle TextView with the count of listings
-        val listingCount = listings.size
-        listingsSubtitle.text = "You have ($listingCount) listings"
+                    // Update the listingsSubtitle TextView with the count of listings
+                    val listingCount = listings.size
+                    listingsSubtitle.text = "You have ($listingCount) listings"
 
-        // Initialize RecyclerView and Adapter
-        listingsRecyclerView = findViewById(R.id.listingsRecyclerView)
-        listingsRecyclerView.layoutManager = LinearLayoutManager(this)
-        listingsAdapter = ListingsAdapter(listings, { listing ->
-            // Handle delete functionality
-            dbHelper.deleteListingById(listing.id)
-            Toast.makeText(this, "${listing.title} deleted successfully!", Toast.LENGTH_SHORT).show()
-            loadUserListings(userId) // Reload the listings to refresh count and UI
-        }, { listing ->
-            // Handle edit functionality: Navigate to PostActivity
-            val intent = Intent(this, PostActivity::class.java).apply {
-                putExtra("listingId", listing.id)
-                putExtra("title", listing.title)
-                putExtra("price", listing.price)
-                putExtra("address", listing.address)
-                putExtra("description", listing.description)
-                putExtra("area", listing.area)
-                putExtra("bedrooms", listing.bedrooms)
-                putExtra("bathrooms", listing.bathrooms)
-                putExtra("stories", listing.stories)
-                putExtra("mainroad", listing.mainroad)
-                putExtra("guestroom", listing.guestroom)
-                putExtra("basement", listing.basement)
-                putExtra("hotWaterHeating", listing.hotWaterHeating)
-                putExtra("airConditioning", listing.airConditioning)
-                putExtra("parking", listing.parking)
-                putExtra("preferredArea", listing.preferredArea)
-                putExtra("furnishingStatus", listing.furnishingStatus)
-                putExtra("imageUri", listing.imageUri)
+                    // Initialize RecyclerView and Adapter
+                    listingsRecyclerView = findViewById(R.id.listingsRecyclerView)
+                    listingsRecyclerView.layoutManager = LinearLayoutManager(this@ManageListingsActivity)
+                    listingsAdapter = ListingsAdapter(listings, { listing ->
+                        // Handle delete functionality via API
+                        deleteListing(listing.id ?: throw IllegalStateException("Listing ID cannot be null"))
+                    }, { listing ->
+                        // Handle edit functionality: Navigate to PostActivity
+                        val intent = Intent(this@ManageListingsActivity, PostActivity::class.java).apply {
+                            putExtra("listingId", listing.id ?: 0) // Provide a default ID if null
+                            putExtra("title", listing.title)
+                            putExtra("price", listing.price)
+                            putExtra("address", listing.address)
+                            putExtra("description", listing.description)
+                            putExtra("area", listing.area)
+                            putExtra("bedrooms", listing.bedrooms)
+                            putExtra("bathrooms", listing.bathrooms)
+                            putExtra("stories", listing.stories)
+                            putExtra("mainroad", listing.mainroad)
+                            putExtra("guestroom", listing.guestroom)
+                            putExtra("basement", listing.basement)
+                            putExtra("hot_water_heating", listing.hotWaterHeating)
+                            putExtra("air_conditioning", listing.airConditioning)
+                            putExtra("parking", listing.parking)
+                            putExtra("preferred_area", listing.preferredArea)
+                            putExtra("furnishing_status", listing.furnishingStatus)
+                            putExtra("image_uri", listing.imageUri)
+                        }
+                        startActivity(intent)
+                    })
+                    listingsRecyclerView.adapter = listingsAdapter
+                } else {
+                    Toast.makeText(this@ManageListingsActivity, "Failed to fetch listings", Toast.LENGTH_SHORT).show()
+                }
             }
-            startActivity(intent)
+
+            override fun onFailure(call: Call<List<Listing>>, t: Throwable) {
+                Toast.makeText(this@ManageListingsActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
         })
-        listingsRecyclerView.adapter = listingsAdapter
+    }
+
+    private fun deleteListing(listingId: Int) {
+        RetrofitInstance.api.deleteListing(listingId).enqueue(object : Callback<Listing> {
+            override fun onResponse(call: Call<Listing>, response: Response<Listing>) {
+                if (response.isSuccessful) {
+                    Toast.makeText(this@ManageListingsActivity, "Listing deleted successfully!", Toast.LENGTH_SHORT).show()
+                    loadUserListings() // Reload the listings to refresh count and UI
+                } else {
+                    Toast.makeText(this@ManageListingsActivity, "Failed to delete listing", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Listing>, t: Throwable) {
+                Toast.makeText(this@ManageListingsActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }
-
-// Updated Listing data class
-data class Listing(
-    val id: Int,
-    val title: String,
-    val price: String,
-    val address: String,
-    val description: String,
-    val area: String,
-    val bedrooms: String,
-    val bathrooms: String,
-    val stories: String,
-    val mainroad: String,
-    val guestroom: String,
-    val furnishingStatus: String,
-    val imageUri: String,
-    val imageResId: Int,
-    val userName: String,
-    val basement: String,             // New: Basement
-    val hotWaterHeating: String,      // New: Hot Water Heating
-    val airConditioning: String,      // New: Air Conditioning
-    val parking: String,              // New: Parking
-    val preferredArea: String,
-)
 
 // Updated ListingsAdapter class
 class ListingsAdapter(
@@ -194,7 +155,8 @@ class ListingsAdapter(
     override fun onBindViewHolder(holder: ListingViewHolder, position: Int) {
         val listing = listings[position]
         holder.listingTitle.text = listing.title
-        holder.listingImage.setImageResource(listing.imageResId)
+        // Update with image if applicable
+        // holder.listingImage.setImageResource(listing.imageResId) // Uncomment if images are available
 
         // Handle delete functionality
         holder.deleteIcon.setOnClickListener {

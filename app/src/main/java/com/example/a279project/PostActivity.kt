@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.example.a279project.api.RetrofitInstance
 
 class PostActivity : AppCompatActivity() {
 
@@ -87,9 +88,9 @@ class PostActivity : AppCompatActivity() {
             val mainroad = intent.getStringExtra("mainroad") == "yes"
             val guestroom = intent.getStringExtra("guestroom") == "yes"
             val basement = intent.getStringExtra("basement") == "yes"
-            val hotWaterHeating = intent.getStringExtra("hotWaterHeating") == "yes"
-            val airConditioning = intent.getStringExtra("airConditioning") == "yes"
-            val preferredArea = intent.getStringExtra("preferredArea") == "yes"
+            val hotWaterHeating = intent.getStringExtra("hot_water_heating") == "yes"
+            val airConditioning = intent.getStringExtra("air_conditioning") == "yes"
+            val preferredArea = intent.getStringExtra("preferred_area") == "yes"
 
 
             mainroadGroup.check(if (mainroad) R.id.mainroadYes else R.id.mainroadNo)
@@ -101,14 +102,14 @@ class PostActivity : AppCompatActivity() {
             parkingInput.setText(intent.getStringExtra("parking") ?: "")
             preferredAreaGroup.check(if (preferredArea) R.id.preferredAreaYes else R.id.preferredAreaNo)
 
-            val furnishingStatus = intent.getStringExtra("furnishingStatus")
+            val furnishingStatus = intent.getStringExtra("furnishing_status")
             furnishingStatusSpinner.setSelection(
                 (furnishingStatusSpinner.adapter as ArrayAdapter<String>).getPosition(
                     furnishingStatus ?: ""
                 )
             )
 
-            originalImageUri = intent.getStringExtra("imageUri")
+            originalImageUri = intent.getStringExtra("image_uri")
             if (!originalImageUri.isNullOrEmpty()) {
                 val resId = resources.getIdentifier(
                     originalImageUri!!.replace("drawable/", ""),
@@ -144,28 +145,14 @@ class PostActivity : AppCompatActivity() {
             val bedrooms = bedroomsInput.text.toString().trim()
             val bathrooms = bathroomsInput.text.toString().trim()
             val stories = storiesInput.text.toString().trim()
-            val mainroad =
-                if (mainroadGroup.checkedRadioButtonId == R.id.mainroadYes) "yes" else "no"
-            val guestroom =
-                if (guestroomGroup.checkedRadioButtonId == R.id.guestroomYes) "yes" else "no"
-            val basement =
-                if (basementGroup.checkedRadioButtonId == R.id.basementYes) "yes" else "no"
-            val hotWaterHeating =
-                if (hotWaterHeatingGroup.checkedRadioButtonId == R.id.hotWaterYes) "yes" else "no"
-            val airConditioning =
-                if (airConditioningGroup.checkedRadioButtonId == R.id.airConditioningYes) "yes" else "no"
-            val parking = parkingInput.text.toString().trim()
-            val preferredArea =
-                if (preferredAreaGroup.checkedRadioButtonId == R.id.preferredAreaYes) "yes" else "no"
+            val mainroad = if (mainroadGroup.checkedRadioButtonId == R.id.mainroadYes) "yes" else "no"
+            val guestroom = if (guestroomGroup.checkedRadioButtonId == R.id.guestroomYes) "yes" else "no"
+            val basement = if (basementGroup.checkedRadioButtonId == R.id.basementYes) "yes" else "no"
+            val hotWaterHeating = if (hotWaterHeatingGroup.checkedRadioButtonId == R.id.hotWaterYes) "yes" else "no"
+            val airConditioning = if (airConditioningGroup.checkedRadioButtonId == R.id.airConditioningYes) "yes" else "no"
+            val parking = parkingInput.text.toString().trim().toIntOrNull() ?: 0
+            val preferredArea = if (preferredAreaGroup.checkedRadioButtonId == R.id.preferredAreaYes) "yes" else "no"
             val furnishingStatus = furnishingStatusSpinner.selectedItem.toString()
-
-            // Input Validation
-            if (title.isEmpty() || price.isEmpty() || address.isEmpty() || description.isEmpty() ||
-                area.isEmpty() || bedrooms.isEmpty() || bathrooms.isEmpty() || stories.isEmpty() || parking.isEmpty()
-            ) {
-                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
 
             val imagePath = if (isLocalDrawableSelected) {
                 "drawable/${resources.getResourceEntryName(selectedDrawableResId)}"
@@ -175,82 +162,71 @@ class PostActivity : AppCompatActivity() {
                     return@setOnClickListener
                 }
             }
+            if (title.isEmpty() || price.isEmpty() || address.isEmpty() || description.isEmpty() ||
+                area.isEmpty() || bedrooms.isEmpty() || bathrooms.isEmpty() || stories.isEmpty() ||
+                furnishingStatus.isEmpty() || parking < 0) {
+                Toast.makeText(this, "Please fill in all required fields correctly", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val listingCreate = ListingCreate(
+                title = title,
+                price = price,
+                address = address,
+                description = description,
+                area = area,
+                bedrooms = bedrooms,
+                bathrooms = bathrooms,
+                stories = stories,
+                mainroad = mainroad,
+                guestroom = guestroom,
+                furnishing_status = furnishingStatus,
+                basement = basement,
+                hot_water_heating = hotWaterHeating,
+                air_conditioning = airConditioning,
+                parking = parking,
+                preferred_area = preferredArea,
+                image_uri = imagePath,
+                user_id = currentUserId ?: "",
+                user_full_name = "Your Full Name" // Retrieve this from Firebase or elsewhere
+            )
+
             if (isEditing) {
-                // Update existing listing
-                val rowsUpdated = dbHelper.updateListingWithDetails(
-                    editingListingId,
-                    title,
-                    price,
-                    address,
-                    description,
-                    imagePath,
-                    area,
-                    bedrooms,
-                    bathrooms,
-                    stories,
-                    mainroad,
-                    guestroom,
-                    basement,
-                    hotWaterHeating,
-                    airConditioning,
-                    parking,
-                    preferredArea,
-                    furnishingStatus
-                )
-                if (rowsUpdated > 0) {
-                    Toast.makeText(this, "Listing updated successfully!", Toast.LENGTH_SHORT).show()
-                    finish()
-                } else {
-                    Toast.makeText(this, "Failed to update listing", Toast.LENGTH_SHORT).show()
-                }
-            } else {
-
-
-                // Save new listing
-                currentUserId?.let { userId ->
-                    val userName = dbHelper.getUserFullName(userId)
-                    if (userName != null) {
-                        val id = dbHelper.insertListing(
-                            userId,
-                            userName,
-                            title,
-                            price,
-                            address,
-                            description,
-                            imagePath,
-                            area,
-                            bedrooms,
-                            bathrooms,
-                            stories,
-                            mainroad,
-                            guestroom,
-                            basement,
-                            hotWaterHeating,
-                            airConditioning,
-                            parking,
-                            preferredArea,
-                            furnishingStatus
-                        )
-                        if (id > 0) {
-                            Toast.makeText(
-                                this,
-                                "Listing created successfully!",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                // Update listing
+                RetrofitInstance.api.updateListing(editingListingId, listingCreate).enqueue(object : retrofit2.Callback<Listing?> {
+                    override fun onResponse(call: retrofit2.Call<Listing?>, response: retrofit2.Response<Listing?>) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(this@PostActivity, "Listing updated successfully!", Toast.LENGTH_SHORT).show()
                             finish()
                         } else {
-                            Toast.makeText(this, "Failed to save listing", Toast.LENGTH_SHORT)
-                                .show()
+                            Toast.makeText(this@PostActivity, "Failed to update listing", Toast.LENGTH_SHORT).show()
                         }
-                    } else {
-                        Toast.makeText(this, "Failed to retrieve user details", Toast.LENGTH_SHORT)
-                            .show()
                     }
-                } ?: run {
-                    Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show()
-                }
+
+                    override fun onFailure(call: retrofit2.Call<Listing?>, t: Throwable) {
+                        Toast.makeText(this@PostActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                    }
+                })
+            } else {
+                // Create listing
+                RetrofitInstance.api.createListing(listingCreate).enqueue(object : retrofit2.Callback<Listing?> {
+                    override fun onResponse(call: retrofit2.Call<Listing?>, response: retrofit2.Response<Listing?>) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(this@PostActivity, "Listing created successfully!", Toast.LENGTH_SHORT).show()
+                            finish()
+                        } else {
+                            Toast.makeText(this@PostActivity, "Failed to create listing", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    override fun onFailure(call: retrofit2.Call<Listing?>, t: Throwable) {
+                        Toast.makeText(this@PostActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                    }
+                })
             }
+
         }
+
     }
 
     private fun showDrawablePickerDialog() {
@@ -298,3 +274,40 @@ class PostActivity : AppCompatActivity() {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
