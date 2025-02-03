@@ -159,4 +159,4 @@ HouseIt is a real estate marketplace application designed to provide users with 
 ---
 
 ## 📧 Contact
-For questions or collaborations, please contact us at **your.email@example.com**.
+For questions or collaborations, please contact us at **jeandouaihy2003@gmail.com**.
