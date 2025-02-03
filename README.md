@@ -135,19 +135,7 @@ HouseIt is a real estate marketplace application designed to provide users with 
 ## 🎨 Screenshots
 
 ### Home Page
-![Home Page](screenshots/HomePage.png)
-
-### Create Account
-![Create Account](screenshots/CreateAccount.png)
-
-### Price Prediction
-![Price Prediction](screenshots/PricePrediction.png)
-
-### Search Page
-![Search Page](screenshots/SearchPage.png)
-
-### Property Details
-![Property Details](screenshots/PropertyDetails.png)
+![Screenshot 2024-12-07 141406](https://github.com/user-attachments/assets/2cd5148c-c46d-4f29-8dee-b12a13e1cffe)
 
 ---
 
