@@ -17,7 +17,7 @@
 
         <!-- Set WelcomeActivity as the main launcher activity -->
         <activity
-            android:name=".WelcomeActivity"
+            android:name=".SearchActivity"
             android:exported="true"
             android:theme="@style/Theme._279project">
             <intent-filter>
@@ -32,7 +32,6 @@
         <!-- Define LoginActivity without exported attribute -->
         <activity android:name=".LoginActivity" android:exported="false" />
         <activity android:name=".CreateAccountActivity" />
-        <activity android:name=".SearchActivity" />
         <activity android:name=".ForgotPasswordActivity" /> <!-- Add this line -->
         <activity android:name=".ProfileActivity" />
         <activity android:name=".EditProfileActivity" />
