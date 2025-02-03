@@ -137,8 +137,36 @@ HouseIt is a real estate marketplace application designed to provide users with 
 ![Screenshot 2024-12-07 141406](https://github.com/user-attachments/assets/2cd5148c-c46d-4f29-8dee-b12a13e1cffe)
 
 ![Screenshot 2024-12-07 141651](https://github.com/user-attachments/assets/9ba9de3d-5bba-4af5-b016-247ad14c0f86)
-![Screenshot 2024-12-07 141651](https://github.com/user-attachments/assets/592f33a2-2511-4534-81a4-33aa575e3a1d)
-![Screenshot 2024-12-07 141651](https://github.com/user-attachments/assets/07c9a115-18a8-4524-8e71-2f3b7a7df8fb)
+
+![Screenshot 2024-12-07 141719](https://github.com/user-attachments/assets/ccb179d9-da14-43cc-8459-b8c2cae4a846)
+
+![Screenshot 2024-12-07 141739](https://github.com/user-attachments/assets/b83ab81d-a3b7-45e4-a3eb-b7462bbe33a0)
+
+![Screenshot 2024-12-07 141901](https://github.com/user-attachments/assets/e21db509-ebb9-496b-ac6f-b530c05667cb)
+
+![Screenshot 2024-12-07 141922](https://github.com/user-attachments/assets/7d07712e-f1f0-4843-b2a3-6f08618045f5)
+
+![Screenshot 2024-12-07 141943](https://github.com/user-attachments/assets/a5ca61a9-bc6b-4a0d-88d1-c0334998d9d7)
+
+![Screenshot 2024-12-07 142012](https://github.com/user-attachments/assets/f9452a78-93af-46d1-8b86-9795c175cf66)
+
+![Screenshot 2024-12-07 142140](https://github.com/user-attachments/assets/5b1a9ff7-73ee-45e8-8c18-60fff03f19d9)
+
+![Screenshot 2024-12-07 142206](https://github.com/user-attachments/assets/c98c302c-0c73-42cd-8c5c-e9b520c6323a)
+
+![Screenshot 2024-12-07 142236](https://github.com/user-attachments/assets/20abc2f4-0bf6-4ba4-bad4-feef335a0e90)
+
+![Screenshot 2024-12-07 142402](https://github.com/user-attachments/assets/de7edf52-d877-481d-ab73-921abf1e2342)
+
+![Screenshot 2024-12-07 142420](https://github.com/user-attachments/assets/6a9888de-d030-48a1-8af3-9aaf6f2e947b)
+
+![Screenshot 2024-12-07 142517](https://github.com/user-attachments/assets/155eca3c-2934-4fa1-b275-25b489ccd6ac)
+
+![Screenshot 2024-12-07 142546](https://github.com/user-attachments/assets/27cb48df-d1bb-4917-b4eb-393720e97287)
+
+![Screenshot 2024-12-07 142602](https://github.com/user-attachments/assets/c2c124b2-be3d-4bba-abda-305d5bc47c7e)
+
+![Screenshot 2024-12-07 142627](https://github.com/user-attachments/assets/782fd666-2b27-42ef-a19e-6cf146e4342b)
 
 
 ---
